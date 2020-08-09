@@ -1,0 +1,14 @@
+<div class="picker">
+  <div class="avatar">
+    <img *ngIf="showPreview" [src]="photo" alt="" class="image" />
+  </div>
+  <div class="icon" (click)="onPickImage()">
+    <i class="fa fa-camera"></i>
+  </div>
+</div>
+<input
+  type="file"
+  accept="image/jpeg"
+  #filePicker
+  (change)="onFileChosen($event)"
+/>

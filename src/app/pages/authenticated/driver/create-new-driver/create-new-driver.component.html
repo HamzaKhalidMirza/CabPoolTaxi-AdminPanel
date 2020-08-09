@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Create New Driver | CabPoolTaxi</title>
+
+    <!-- Custom fonts for this template-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- SideNav -->
+      <app-side-nav [activeLink]="'Driver'"></app-side-nav>
+      <!-- End of SideNav  -->
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- TopNav -->
+          <app-top-nav></app-top-nav>
+          <!-- End of TopNav  -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">Create New Driver</h1>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                  New Driver
+                </h6>
+              </div>
+              <div class="card-body">
+                <form [formGroup]="createDriverForm">
+                  <p class="alert alert-danger" *ngIf="formInvalid">
+                    Please fill all the details correctly.
+                  </p>
+                  <p class="alert alert-danger" *ngIf="phoneExists">
+                    Mobile Number already exits.
+                  </p>
+                  <p class="alert alert-danger" *ngIf="emailExists">
+                    Email already exits.
+                  </p>
+                  <p class="alert alert-danger" *ngIf="cnicExists">
+                    Cnic already exits.
+                  </p>
+                  <p class="alert alert-danger" *ngIf="licenseExists">
+                    License already exits.
+                  </p>
+                  <p class="alert alert-danger" *ngIf="registrationExists">
+                    Vehicle already exits.
+                  </p>
+                  <p class="alert alert-success" *ngIf="formSubmitted">
+                    Record Creaeted Successfully.
+                  </p>
+                  <div class="form-row">
+                    <div class="col-12">
+                      <app-image-picker
+                        [showPreview]="!formSubmitted"
+                        (imagePick)="onImagePicked($event)"
+                      ></app-image-picker>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-xl-4 col-lg-9 mb-4">
+                      <div class="input-group" style="position: relative;">
+                        <p class="info-feedback">
+                          Mobile Number
+                          <span class="star">*</span>
+                        </p>
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button">
+                            +92
+                          </button>
+                        </div>
+                        <input
+                          type="number"
+                          id="phone"
+                          class="form-control border-1 small"
+                          placeholder="1234567890"
+                          aria-describedby="basic-addon2"
+                          formControlName="phone"
+                          #phoneView
+                        />
+                        <p class="invalid-feedback" *ngIf="phoneInvalid">
+                          Enter valid Mobile Number.
+                        </p>
+                        <p class="invalid-feedback" *ngIf="maxAttempts">
+                          Max Attemps Reached. Try Again Later!
+                        </p>
+                        <p class="valid-feedback" *ngIf="codeSent">
+                          Code Sent Successfully.
+                        </p>
+                        <p class="valid-feedback" *ngIf="codeResent">
+                          Code Resent Successfully.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 mb-4" *ngIf="!fieldEnable">
+                      <div class="input-group">
+                        <p
+                          class="info-feedback d-none d-lg-block"
+                          style="color: #fff;"
+                        >
+                          .
+                        </p>
+                        <div class="input-group-append" style="width: 100%;">
+                          <button
+                            class="btn btn-primary"
+                            [disabled]="fieldEnable"
+                            type="button"
+                            style="width: 100%;"
+                            (click)="sendCode()"
+                          >
+                            <p *ngIf="!sendCodeLoading" style="margin: 0;">
+                              Send Code
+                            </p>
+                            <span
+                              class="spinner-grow spinner-grow-sm"
+                              role="status"
+                              aria-hidden="true"
+                              *ngIf="sendCodeLoading"
+                            >
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 mb-4" *ngIf="fieldEnable">
+                      <div class="input-group">
+                        <p
+                          class="info-feedback d-none d-lg-block"
+                          style="color: #fff;"
+                        >
+                          .
+                        </p>
+                        <div class="input-group-append" style="width: 100%;">
+                          <button
+                            class="btn btn-primary"
+                            [disabled]="codeVerified"
+                            type="button"
+                            style="width: 100%;"
+                            (click)="resendCode()"
+                          >
+                            <p *ngIf="!sendCodeLoading" style="margin: 0;">
+                              Resend Code
+                            </p>
+                            <span
+                              class="spinner-grow spinner-grow-sm"
+                              role="status"
+                              aria-hidden="true"
+                              *ngIf="sendCodeLoading"
+                            >
+                            </span>
+                          </button>
+                        </div>
+                        <a (click)="changePhoneNumber()">
+                          <p class="info-bottom-feedback" *ngIf="changeNumber">
+                            Change Number
+                          </p>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-9 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Verification Code
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="number"
+                          class="form-control border-1 small"
+                          placeholder="****"
+                          aria-describedby="basic-addon2"
+                          formControlName="code"
+                          #codeView
+                        />
+                        <p class="invalid-feedback" *ngIf="codeInvalid">
+                          Enter valid code
+                        </p>
+                        <p class="valid-feedback" *ngIf="codeVerified">
+                          Code Verified.
+                        </p>
+                        <p class="invalid-feedback" *ngIf="codeNotVerified">
+                          Invalid Code.
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 mb-4">
+                      <div class="input-group">
+                        <p
+                          class="info-feedback d-none d-lg-block"
+                          style="color: #fff;"
+                        >
+                          .
+                        </p>
+                        <div class="input-group-append" style="width: 100%;">
+                          <button
+                            class="btn btn-primary"
+                            [disabled]="!fieldEnable || codeVerified"
+                            type="button"
+                            style="width: 100%;"
+                            (click)="verifyCode()"
+                          >
+                            <p *ngIf="!confirmCodeLoading" style="margin: 0;">
+                              Verify Code
+                            </p>
+                            <span
+                              class="spinner-grow spinner-grow-sm"
+                              role="status"
+                              aria-hidden="true"
+                              *ngIf="confirmCodeLoading"
+                            ></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Username
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter Full Name"
+                          aria-describedby="basic-addon2"
+                          formControlName="username"
+                          #usernameView
+                        />
+                        <p class="invalid-feedback" *ngIf="usernameInvalid">
+                          Enter valid username
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Email
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter Email Address"
+                          aria-describedby="basic-addon2"
+                          formControlName="email"
+                          #emailView
+                        />
+                        <p class="invalid-feedback" *ngIf="emailInvalid">
+                          Enter valid email
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Cnic
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          maxlength="15"
+                          app-cnic-mask
+                          placeholder="Enter Cnic#"
+                          aria-describedby="basic-addon2"
+                          formControlName="cnicNo"
+                          #usernameView
+                        />
+                        <p class="invalid-feedback" *ngIf="cnicInvalid">
+                          Invalid Cnic No
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          License
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter License#"
+                          aria-describedby="basic-addon2"
+                          formControlName="licenseNo"
+                          #emailView
+                        />
+                        <p class="invalid-feedback" *ngIf="licensedInvalid">
+                          Invalid License No
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Address
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter Postal Address"
+                          aria-describedby="basic-addon2"
+                          formControlName="address"
+                          #emailView
+                        />
+                        <p class="invalid-feedback" *ngIf="addressInvalid">
+                          Enter valid address
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Gender
+                          <span class="star">*</span>
+                        </p>
+                        <select
+                          name="gender"
+                          class="form-control border-1 small"
+                          formControlName="gender"
+                          #genderView
+                        >
+                          <option [ngValue]="null" disabled
+                            >Select Gender</option
+                          >
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="others">Others</option>
+                        </select>
+                        <p class="invalid-feedback" *ngIf="genderInvalid">
+                          Enter valid gender
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Password
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="password"
+                          class="form-control border-1 small"
+                          placeholder="Enter Password"
+                          aria-describedby="basic-addon2"
+                          formControlName="password"
+                          #passwordView
+                        />
+                        <div class="input-group-append">
+                          <button
+                            class="btn btn-primary"
+                            type="button"
+                            (click)="togglePasswordType()"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                        </div>
+                        <p class="invalid-feedback" *ngIf="passwordInvalid">
+                          Enter valid password
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Confirm Password
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="password"
+                          class="form-control border-1 small"
+                          placeholder="Confirm Password"
+                          aria-describedby="basic-addon2"
+                          formControlName="confPassword"
+                          #confPasswordView
+                        />
+                        <div class="input-group-append">
+                          <button
+                            class="btn btn-primary"
+                            type="button"
+                            (click)="toggleConfirmPasswordType()"
+                          >
+                            <i class="fas fa-eye"></i>
+                          </button>
+                        </div>
+                        <p class="invalid-feedback" *ngIf="confPasswordInvalid">
+                          Enter valid confirm password
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-divider"></div>
+                  <div class="form-row">
+                    <div class="col-12">
+                      <app-image-picker
+                        [showPreview]="!formSubmitted"
+                        (imagePick)="onVehicleImagePicked($event)"
+                      ></app-image-picker>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Model
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter Car Model"
+                          aria-describedby="basic-addon2"
+                          formControlName="modelName"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Total Seats
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="number"
+                          class="form-control border-1 small"
+                          placeholder="Enter Seats in Car"
+                          aria-describedby="basic-addon2"
+                          formControlName="totalSeats"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Registration#
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter Car Registration#"
+                          aria-describedby="basic-addon2"
+                          formControlName="registrationNo"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Color
+                          <span class="star">*</span>
+                        </p>
+                        <input
+                          type="text"
+                          class="form-control border-1 small"
+                          placeholder="Enter Car Color"
+                          aria-describedby="basic-addon2"
+                          formControlName="color"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Ac/Non-AC
+                          <span class="star">*</span>
+                        </p>
+                        <select
+                          name="ac"
+                          class="form-control border-1 small"
+                          formControlName="ac"
+                        >
+                          <option [ngValue]="null" disabled
+                            >Select AC or Non-Ac</option
+                          >
+                          <option value="AC">AC</option>
+                          <option value="Non-AC">Non-AC</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Type
+                          <span class="star">*</span>
+                        </p>
+                        <select
+                          name="type"
+                          class="form-control border-1 small"
+                          formControlName="type"
+                        >
+                          <option [ngValue]="null" disabled
+                            >Select Type</option
+                          >
+                          <option value="mini">Mini</option>
+                          <option value="moto">Moto</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="col-12 mb-4">
+                      <div class="input-group">
+                        <p class="info-feedback">
+                          Description
+                          <span class="star">*</span>
+                        </p>
+                        <textarea
+                          rows="4"
+                          class="form-control border-1 small"
+                          placeholder="Enter Description"
+                          aria-describedby="basic-addon2"
+                          formControlName="description"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-divider"></div>
+                  <div class="form-row">
+                    <div class="col-12 mb-4">
+                      <button
+                        class="btn btn-primary"
+                        [disabled]="!codeVerified"
+                        type="button"
+                        style="width: 100%;"
+                        type="submit"
+                        (click)="createDriver()"
+                      >
+                        <p *ngIf="!createDriverLoading" style="margin: 0;">
+                          Create
+                        </p>
+                        <span
+                          class="spinner-border spinner-border-sm"
+                          role="status"
+                          aria-hidden="true"
+                          *ngIf="createDriverLoading"
+                        ></span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; Your Website 2020</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Select "Logout" below if you are ready to logout.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-primary" href="#" (click)="logout()">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

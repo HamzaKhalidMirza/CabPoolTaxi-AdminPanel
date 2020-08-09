@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Driver Detail | CabPoolTaxi</title>
+
+    <!-- Custom fonts for this template-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body id="page-top">
+    <!-- Loading Spinner -->
+    <div
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+      "
+    >
+      <span
+        class="spinner-border text-primary"
+        role="status"
+        aria-hidden="true"
+        *ngIf="loading"
+      >
+      </span>
+    </div>
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- SideNav -->
+      <app-side-nav [activeLink]="'Car'"></app-side-nav>
+      <!-- End of SideNav  -->
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- TopNav -->
+          <app-top-nav></app-top-nav>
+          <!-- End of TopNav  -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid" [hidden]="loading">
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">Driver Detail</h1>
+
+            <!-- DataTales Example -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                  Driver
+                </h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="picker">
+                      <div class="avatar">
+                        <img [src]="loadedData?.photoAvatar" alt="" class="image" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">Username:</span> {{loadedData?.username}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">First Name:</span> {{loadedData?.fName}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                        ><span class="info">Last Name:</span> {{loadedData?.lName}}</p>
+                      </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">Phone:</span> {{loadedData?.phone}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">Email:</span> {{loadedData?.email}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">Gender:</span> {{loadedData?.gender}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">CNIC:</span> {{loadedData?.cnicNo}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">License:</span> {{loadedData?.licenseNo}}</p>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="input-group">
+                      <p
+                        class="form-control border-1 small"
+                      ><span class="info">Address:</span> {{loadedData?.address}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; Your Website 2020</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div
+      class="modal fade"
+      id="logoutModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Select "Logout" below if you are ready to logout.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-primary" href="#" (click)="logout()">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
