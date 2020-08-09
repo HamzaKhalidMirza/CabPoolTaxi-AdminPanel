@@ -2,7 +2,7 @@ import { AdminDetailRoutingModule } from './admin-detail-routing.module';
 import { SharedModule } from './../../../../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminDetailComponent } from './Admin-detail.component';
+import { AdminDetailComponent } from './admin-detail.component';
 @NgModule({
   declarations: [
     AdminDetailComponent,
