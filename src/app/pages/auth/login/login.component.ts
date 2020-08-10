@@ -7,6 +7,7 @@ import { NotFoundError } from 'src/common/error/not-found-error';
 import { UnAuthorized } from 'src/common/error/unauthorized-error';
 import { Router } from '@angular/router';
 import { AdminAuthService } from 'src/common/sdk/custom/api/adminAuth.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -20,12 +21,14 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private titleService: Title,
     private formBuilder: FormBuilder,
     private adminAuthService: AdminAuthService,
     private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.titleService.setTitle('Login | CabPoolTaxi');
     this.formInitializer();
   }
 
