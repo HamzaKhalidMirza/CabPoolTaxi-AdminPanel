@@ -49,20 +49,21 @@ export class CarService {
     );
   }
 
-  public async createCar(credentials: object | any) {
+  public async createCar(credentials: object | any, imgUrl) {
     const token = await this.authService.getTokenFromStorage();
     const url = AdminAppConfig.getHostPath() + '/api/v1/vehicles';
 
-    const formData = new FormData();
-    formData.append('ac', credentials.ac);
-    formData.append('modelName', credentials.modelName);
-    formData.append('totalSeats', credentials.totalSeats);
-    formData.append('registrationNo', credentials.registrationNo);
-    formData.append('color', credentials.color);
-    formData.append('vehicleAvatar', credentials.vehicleAvatar);
-    formData.append('driver', credentials.driver);
-    formData.append('type', credentials.type);
-    formData.append('description', credentials.description);
+    let formData = {
+      'ac': credentials.ac,
+      'modelName': credentials.modelName,
+      'totalSeats': credentials.totalSeats,
+      'registrationNo': credentials.registrationNo,
+      'color': credentials.color,
+      'vehicleAvatar': imgUrl,
+      'driver': credentials.driver,
+      'type': credentials.type,
+      'description': credentials.description
+    };
 
     return this.http.post(url, formData,  {
       headers: new HttpHeaders().set("Authorization", "Bearer " + token),

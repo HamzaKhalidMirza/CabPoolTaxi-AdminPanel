@@ -8,6 +8,14 @@ import { ErrorInterceptor } from 'src/common/sdk/core/httpinterceptor.service';
 import { AppErrorHandler } from 'src/common/error/app-error-handler';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { environment } from "../environments/environment";
+import { AngularFireModule } from "@angular/fire";
+import {
+  AngularFireStorageModule,
+  AngularFireStorageReference,
+  AngularFireUploadTask
+} from "@angular/fire/storage";
+
 @NgModule({
   declarations: [
     AppComponent
@@ -17,6 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

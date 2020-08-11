@@ -13,6 +13,7 @@ import { AuthService } from 'src/common/sdk/core/auth.service';
 import { NotFoundError } from 'src/common/error/not-found-error';
 import { UnAuthorized } from 'src/common/error/unauthorized-error';
 import { Subscription } from 'rxjs';
+import { FirebaseImageHandler } from 'src/common/sdk/custom/api/firebase-image-handler.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -60,6 +61,7 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
     private titleService: Title,
     private formBuilder: FormBuilder,
     private adminService: AdminService,
+    private firebaseImageHandler: FirebaseImageHandler,
     private authService: AuthService
   ) {}
 
@@ -92,7 +94,7 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20),
-          Validators.pattern('^[a-zA-Z ]*$')
+          Validators.pattern('^[a-zA-Z ]*$'),
         ],
       ],
       nationality: [''],
@@ -115,7 +117,7 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
           this.matchOtherValidator('password'),
         ],
       ],
-      photoAvatar: ['', [Validators.required]]
+      photoAvatar: ['', [Validators.required]],
     });
     this.createAdminForm.reset();
   }
@@ -172,7 +174,7 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
   }
 
   togglePasswordType() {
-    if(this.passwordView.nativeElement.type === 'password') {
+    if (this.passwordView.nativeElement.type === 'password') {
       this.passwordView.nativeElement.type = 'text';
     } else {
       this.passwordView.nativeElement.type = 'password';
@@ -180,7 +182,7 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
   }
 
   toggleConfirmPasswordType() {
-    if(this.confPasswordView.nativeElement.type === 'password') {
+    if (this.confPasswordView.nativeElement.type === 'password') {
       this.confPasswordView.nativeElement.type = 'text';
     } else {
       this.confPasswordView.nativeElement.type = 'password';
@@ -243,7 +245,6 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
   }
 
   async getCode(sendStatus?: string) {
-
     this.resendStatus = false;
     const obs = await this.adminService.getVerificationCode({
       phone: this.phone.value,
@@ -303,7 +304,6 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
   }
 
   async checkVerification() {
-
     const obs = await this.adminService.verifyCode({
       phone: this.phone.value,
       countryCode: '+92',
@@ -340,98 +340,69 @@ export class CreateNewAdminComponent implements OnInit, AfterViewInit {
     this.codeView.nativeElement.disabled = true;
   }
 
-  checkDataForValidity() {
-
-  }
+  checkDataForValidity() {}
 
   async createAdmin() {
     if (this.createAdminForm.invalid) {
       console.log(this.createAdminForm);
       this.formInvalid = true;
       this.formSubmitted = false;
-      // if(this.phone.errors) {
-      //   this.phoneView.nativeElement.classList.add('is-invalid');
-      //   this.phoneInvalid = true;
-      // }
-      // if(this.username.errors) {
-      //   this.usernameView.nativeElement.classList.add('is-invalid');
-      //   this.usernameInvalid = true;
-      // }
-      // if(this.email.errors) {
-      //   this.emailView.nativeElement.classList.add('is-invalid');
-      //   this.emailInvalid = true;
-      // }
-      // if(this.gender.errors) {
-      //   this.genderView.nativeElement.classList.add('is-invalid');
-      //   this.genderInvalid = true;
-      // }
-      // if(this.role.errors) {
-      //   this.roleView.nativeElement.classList.add('is-invalid');
-      //   this.roleInvalid = true;
-      // }
-      // if(this.password.errors) {
-      //   this.passwordView.nativeElement.classList.add('is-invalid');
-      //   this.passwordInvalid = true;
-      // }
-      // if(this.confPassword.errors) {
-      //   this.confPasswordView.nativeElement.classList.add('is-invalid');
-      //   this.confPasswordInvalid = true;
-      // }
       return;
     }
-
-    // this.phoneView.nativeElement.classList.add('is-invalid');
-    // this.phoneInvalid = true;
-    // this.usernameView.nativeElement.classList.add('is-invalid');
-    // this.usernameInvalid = true;
-    // this.emailView.nativeElement.classList.add('is-invalid');
-    // this.emailInvalid = true;
-    // this.genderView.nativeElement.classList.add('is-invalid');
-    // this.genderInvalid = true;
-    // this.roleView.nativeElement.classList.add('is-invalid');
-    // this.roleInvalid = true;
-    // this.passwordView.nativeElement.classList.add('is-invalid');
-    // this.passwordInvalid = true;
-    // this.confPasswordView.nativeElement.classList.add('is-invalid');
-    // this.confPasswordInvalid = true;
 
     this.codeSent = false;
     this.codeResent = false;
     this.codeNotVerified = false;
-    this.changeNumber = false;
     this.formInvalid = false;
     this.formSubmitted = false;
     this.phoneExists = false;
     this.emailExists = false;
     this.createAdminLoading = true;
+    this.createAdminForm.patchValue({ nationality: 'Pakistan' });
 
-    this.createAdminForm.patchValue({nationality: 'Pakistan'});
-    const obs = await this.adminService.createAdmin(this.createAdminForm.value);
-    obs.subscribe(
-      (response) => {
-        this.createAdminLoading = false;
-        this.formSubmitted = true;
-        this.codeVerified = false;
-        this.createAdminForm.reset();
-        this.fieldEnable = false;
-        this.phoneView.nativeElement.disabled = false;
-        this.codeView.nativeElement.disabled = true;
-        console.log(response);
-      },
-      (error: AppError) => {
-        this.createAdminLoading = false;
-        if (error instanceof BadInput) {
-          if (error.originalError.error.message === 'Duplicate field value: email. Please use another value!') {
-            this.emailExists = true;
-          } else if (error.originalError.error.message === 'Duplicate field value: phone. Please use another value!') {
-            this.phoneExists = true;
-          }
-        } else {
-          console.log(error);
-          throw error;
-        }
-      }
+    const uploadImgObs = await this.firebaseImageHandler.uploadProfileImg(
+      this.createAdminForm.value,
+      'admins'
     );
+    uploadImgObs.subscribe(async (imgUrl) => {
+      const obs = await this.adminService.createAdmin(
+        this.createAdminForm.value,
+        imgUrl
+      );
+      obs.subscribe(
+        (response) => {
+          this.createAdminLoading = false;
+          this.formSubmitted = true;
+          this.codeVerified = false;
+          this.changeNumber = false;
+          this.createAdminForm.reset();
+          this.fieldEnable = false;
+          this.phoneView.nativeElement.disabled = false;
+          this.codeView.nativeElement.disabled = true;
+          console.log(response);
+        },
+        (error: AppError) => {
+          this.createAdminLoading = false;
+          this.firebaseImageHandler.deleteImage(imgUrl);
+          if (error instanceof BadInput) {
+            if (
+              error.originalError.error.message ===
+              'Duplicate field value: email. Please use another value!'
+            ) {
+              this.emailExists = true;
+            } else if (
+              error.originalError.error.message ===
+              'Duplicate field value: phone. Please use another value!'
+            ) {
+              this.phoneExists = true;
+            }
+          } else {
+            console.log(error);
+            this.createAdminLoading = false;
+          }
+        }
+      );
+    });
   }
 
   logout() {

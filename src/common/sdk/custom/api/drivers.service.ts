@@ -49,21 +49,22 @@ export class DriverService {
     );
   }
 
-  public async createDriver(credentials: object | any) {
+  public async createDriver(credentials: object | any, imgUrl) {
     const token = await this.authService.getTokenFromStorage();
     const url = AdminAppConfig.getHostPath() + '/api/v1/drivers';
 
-    const formData = new FormData();
-    formData.append('phone', credentials.phone);
-    formData.append('username', credentials.username);
-    formData.append('email', credentials.email);
-    formData.append('gender', credentials.gender);
-    formData.append('role', credentials.role);
-    formData.append('password', credentials.password);
-    formData.append('photoAvatar', credentials.photoAvatar);
-    formData.append('cnicNo', credentials.cnicNo);
-    formData.append('licenseNo', credentials.licenseNo);
-    formData.append('address', credentials.address);
+    let formData = {
+      'phone': credentials.phone,
+      'username': credentials.username,
+      'email': credentials.email,
+      'gender': credentials.gender,
+      'role': credentials.role,
+      'password': credentials.password,
+      'photoAvatar': imgUrl,
+      'cnicNo': credentials.cnicNo,
+      'licenseNo': credentials.licenseNo,
+      'address': credentials.address
+    };
 
     return this.http.post(url, formData,  {
       headers: new HttpHeaders().set("Authorization", "Bearer " + token),

@@ -15,6 +15,7 @@ import { AuthService } from 'src/common/sdk/core/auth.service';
 import { NotFoundError } from 'src/common/error/not-found-error';
 import { UnAuthorized } from 'src/common/error/unauthorized-error';
 import { Subscription } from 'rxjs';
+import { FirebaseImageHandler } from 'src/common/sdk/custom/api/firebase-image-handler.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -67,6 +68,7 @@ export class CreateNewDriverComponent implements OnInit {
     private adminService: AdminService,
     private driverServide: DriverService,
     private carService: CarService,
+    private firebaseImageHandler: FirebaseImageHandler,
     private authService: AuthService
   ) {}
 
@@ -381,86 +383,105 @@ export class CreateNewDriverComponent implements OnInit {
     this.licenseExists = false;
     this.registrationExists = false;
     this.createDriverLoading = true;
-
     this.createDriverForm.patchValue({ nationality: 'Pakistan' });
-    const obs = await this.driverServide.createDriver(
-      this.createDriverForm.value
+
+    const uploadImgObs = await this.firebaseImageHandler.uploadProfileImg(
+      this.createDriverForm.value,
+      'drivers'
     );
-    obs.subscribe(
-      async (response: any) => {
-        console.log(response);
+    uploadImgObs.subscribe(async (imgUrl) => {
 
-        this.createDriverForm.patchValue({ driver: response.data.data.id });
-        const obs = await this.carService.createCar(
-          this.createDriverForm.value
-        );
-        obs.subscribe(
-          (response) => {
-            console.log(response);
-            this.createDriverLoading = false;
-            this.formSubmitted = true;
-            this.codeVerified = false;
-            this.createDriverForm.reset();
-            this.fieldEnable = false;
-            this.phoneView.nativeElement.disabled = false;
-            this.codeView.nativeElement.disabled = true;
-          },
-          async (error: AppError) => {
+      const obs = await this.driverServide.createDriver(
+        this.createDriverForm.value,
+        imgUrl
+      );
+      obs.subscribe(
+        async (response: any) => {
+          console.log(response);
+          this.createDriverForm.patchValue({ driver: response.data.data.id });
 
-            const obs = await this.driverServide.deleteDriver({
-              id: response.data.data.id
-            });
+          const vehicleImageObs = await this.firebaseImageHandler.uploadProfileImg(
+            this.createDriverForm.value,
+            'vehicles'
+          );
+          vehicleImageObs.subscribe(async (vehicleImgUrl) => {
+
+            const obs = await this.carService.createCar(
+              this.createDriverForm.value,
+              vehicleImgUrl
+            );
             obs.subscribe(
               (response) => {
-              }, (err) => {
-                console.log(err);
+                console.log(response);
+                this.createDriverLoading = false;
+                this.formSubmitted = true;
+                this.codeVerified = false;
+                this.createDriverForm.reset();
+                this.fieldEnable = false;
+                this.phoneView.nativeElement.disabled = false;
+                this.codeView.nativeElement.disabled = true;
+              },
+              async (error: AppError) => {
+
+                const obs = await this.driverServide.deleteDriver({
+                  id: response.data.data.id
+                });
+                obs.subscribe(
+                  (response) => {
+                  }, (err) => {
+                    console.log(err);
+                  }
+                );
+
+                this.createDriverLoading = false;
+                this.firebaseImageHandler.deleteImage(imgUrl);
+                this.firebaseImageHandler.deleteImage(vehicleImgUrl);
+                if (error instanceof BadInput) {
+                  if (
+                    error.originalError.error.message ===
+                    'Duplicate field value: registrationNo. Please use another value!'
+                  ) {
+                    this.registrationExists = true;
+                  }
+                } else {
+                  console.log(error);
+                }
               }
             );
-
-            this.createDriverLoading = false;
-            if (error instanceof BadInput) {
-              if (
-                error.originalError.error.message ===
-                'Duplicate field value: registrationNo. Please use another value!'
-              ) {
-                this.registrationExists = true;
-              }
-            } else {
-              console.log(error);
+          });
+        },
+        (error: AppError) => {
+          this.createDriverLoading = false;
+          this.firebaseImageHandler.deleteImage(imgUrl);
+          if (error instanceof BadInput) {
+            if (
+              error.originalError.error.message ===
+              'Duplicate field value: email. Please use another value!'
+            ) {
+              this.emailExists = true;
+            } else if (
+              error.originalError.error.message ===
+              'Duplicate field value: phone. Please use another value!'
+            ) {
+              this.phoneExists = true;
+            } else if (
+              error.originalError.error.message ===
+              'Duplicate field value: cnic. Please use another value!'
+            ) {
+              this.cnicExists = true;
+            } else if (
+              error.originalError.error.message ===
+              'Duplicate field value: license. Please use another value!'
+            ) {
+              this.licenseExists = true;
             }
+          } else {
+            console.log(error);
+            throw error;
           }
-        );
-      },
-      (error: AppError) => {
-        this.createDriverLoading = false;
-        if (error instanceof BadInput) {
-          if (
-            error.originalError.error.message ===
-            'Duplicate field value: email. Please use another value!'
-          ) {
-            this.emailExists = true;
-          } else if (
-            error.originalError.error.message ===
-            'Duplicate field value: phone. Please use another value!'
-          ) {
-            this.phoneExists = true;
-          } else if (
-            error.originalError.error.message ===
-            'Duplicate field value: cnic. Please use another value!'
-          ) {
-            this.cnicExists = true;
-          } else if (
-            error.originalError.error.message ===
-            'Duplicate field value: license. Please use another value!'
-          ) {
-            this.licenseExists = true;
-          }
-        } else {
-          console.log(error);
-          throw error;
         }
-      }
-    );
+      );
+    });
   }
 
   logout() {
