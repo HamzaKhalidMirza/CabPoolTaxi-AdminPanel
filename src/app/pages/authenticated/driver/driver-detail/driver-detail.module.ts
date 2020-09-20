@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailComponent } from './driver-detail.component';
 import { DriverDetailRoutingModule } from './driver-detail-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,8 @@ import { DriverDetailRoutingModule } from './driver-detail-routing.module';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     DriverDetailRoutingModule,
     SharedModule
   ]

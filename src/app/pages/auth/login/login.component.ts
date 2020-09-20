@@ -71,6 +71,7 @@ export class LoginComponent implements OnInit {
         console.log(response);
         await this.authService.clearFieldDataFromStorage('admin-auth');
         await this.authService.saveTokenToStorage(response.token);
+        await this.authService.setCurrentUser(response.data.user);
         this.router.navigateByUrl('/dashboard');
       },
       (error: AppError) => {

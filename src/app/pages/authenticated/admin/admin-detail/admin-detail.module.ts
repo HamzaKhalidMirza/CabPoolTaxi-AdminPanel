@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminDetailRoutingModule } from './admin-detail-routing.module';
 import { SharedModule } from './../../../../shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -9,6 +10,8 @@ import { AdminDetailComponent } from './admin-detail.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AdminDetailRoutingModule,
     SharedModule
   ]

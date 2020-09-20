@@ -59,73 +59,198 @@
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                  Admin
-                </h6>
+                <h6 class="m-0 font-weight-bold text-primary">Admin</h6>
               </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-12">
-                    <div class="picker">
-                      <div class="avatar">
-                        <img
-                          [src]="loadedData?.photoAvatar"
-                          alt=""
-                          class="image"
-                        />
+              <ng-template
+                [ngIf]="currentUser?.role !== 'lead-admin'"
+                [ngIfElse]="notLeadAdmin"
+              >
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="picker">
+                        <div class="avatar">
+                          <img
+                            [src]="loadedData?.photoAvatar"
+                            alt=""
+                            class="image"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="form-control border-1 small">
+                          <span class="info">Username:</span>
+                          {{ loadedData?.username }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="form-control border-1 small">
+                          <span class="info">First Name:</span>
+                          {{ loadedData?.fName }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="form-control border-1 small">
+                          <span class="info">Last Name:</span>
+                          {{ loadedData?.lName }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="form-control border-1 small">
+                          <span class="info">Phone:</span>
+                          {{ loadedData?.phone }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="form-control border-1 small">
+                          <span class="info">Email:</span>
+                          {{ loadedData?.email }}
+                        </p>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                      <div class="input-group">
+                        <p class="form-control border-1 small">
+                          <span class="info">Gender:</span>
+                          {{ loadedData?.gender }}
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="input-group">
-                      <p class="form-control border-1 small">
-                        <span class="info">Username:</span>
-                        {{ loadedData?.username }}
-                      </p>
+              </ng-template>
+              <ng-template #notLeadAdmin>
+                <form [formGroup]="form">
+                  <div class="card-body">
+                    <p class="alert alert-success" *ngIf="formSubmitted">
+                      Data Updated Successfully.
+                    </p>
+                    <div class="row">
+                      <div class="col-12">
+                        <app-image-picker
+                        [photo]="[loadedData?.photoAvatar]"
+                        (imagePick)="onImagePicked($event)"
+                      ></app-image-picker>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-4 mb-4">
+                        <div class="input-group">
+                          <p class="form-control border-1 small">
+                            <span class="info">First Name:</span>
+                            {{ loadedData?.fName }}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 mb-4">
+                        <div class="input-group">
+                          <p class="form-control border-1 small">
+                            <span class="info">Last Name:</span>
+                            {{ loadedData?.lName }}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 mb-4">
+                        <div class="input-group">
+                          <p class="form-control border-1 small">
+                            <span class="info">Gender:</span>
+                            {{ loadedData?.gender }}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 mb-4">
+                        <div class="input-group">
+                          <p class="info-feedback">
+                            Username
+                            <span class="star">*</span>
+                          </p>
+                          <input
+                            type="text"
+                            class="form-control border-1 small"
+                            placeholder="Enter Full Name"
+                            aria-describedby="basic-addon2"
+                            formControlName="username"
+                            #usernameView
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-4 mb-4">
+                        <div class="input-group">
+                          <p class="info-feedback">
+                            Mobile No
+                            <span class="star">*</span>
+                          </p>
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" disabled>
+                              +92
+                            </button>
+                          </div>
+                          <input
+                            type="text"
+                            class="form-control border-1 small"
+                            placeholder="Enter Mobile No"
+                            aria-describedby="basic-addon2"
+                            formControlName="phone"
+                            #phoneView
+                          />
+                        </div>
+                      </div>
+                      <div class="col-lg-4 mb-4">
+                        <div class="input-group">
+                          <p class="info-feedback">
+                            Email
+                            <span class="star">*</span>
+                          </p>
+                          <input
+                            type="text"
+                            class="form-control border-1 small"
+                            placeholder="Enter Email"
+                            aria-describedby="basic-addon2"
+                            formControlName="email"
+                            #emailView
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col col-md-6 offset-md-3 mb-4">
+                        <button
+                          class="btn btn-primary"
+                          [disabled]="form.invalid ||
+                          (form.touched && form.pristine) ||
+                          (!imageChanged && form.untouched)"
+                          type="button"
+                          style="width: 100%"
+                          type="submit"
+                          (click)="updateProfile()"
+                        >
+                          <p *ngIf="!updateLoading" style="margin: 0">
+                            Update Profile
+                          </p>
+                          <span
+                            class="spinner-border spinner-border-sm"
+                            role="status"
+                            aria-hidden="true"
+                            *ngIf="updateLoading"
+                          ></span>
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="input-group">
-                      <p class="form-control border-1 small">
-                        <span class="info">First Name:</span>
-                        {{ loadedData?.fName }}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="input-group">
-                      <p class="form-control border-1 small">
-                        <span class="info">Last Name:</span>
-                        {{ loadedData?.lName }}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="input-group">
-                      <p class="form-control border-1 small">
-                        <span class="info">Phone:</span> {{ loadedData?.phone }}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="input-group">
-                      <p class="form-control border-1 small">
-                        <span class="info">Email:</span> {{ loadedData?.email }}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="input-group">
-                      <p class="form-control border-1 small">
-                        <span class="info">Gender:</span>
-                        {{ loadedData?.gender }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </form>
+              </ng-template>
             </div>
           </div>
           <!-- /.container-fluid -->

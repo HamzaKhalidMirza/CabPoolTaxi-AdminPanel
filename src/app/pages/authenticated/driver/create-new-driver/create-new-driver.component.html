@@ -284,12 +284,19 @@
                           maxlength="15"
                           app-cnic-mask
                           placeholder="Enter Cnic#"
-                          aria-describedby="basic-addon2"
                           formControlName="cnicNo"
-                          #usernameView
+                          #cnicView
                         />
+                        <p class="info-bottom-feedback blinking" *ngIf="cnic.pending">
+                          Checking Cnic...
+                        </p>
+                        <div class="invalid-feedback" *ngIf="cnic.invalid">
+                          <p *ngIf="cnic.errors.shouldBeValid">
+                            Invalid! Cnic Not Exists in System.
+                          </p>
+                        </div>
                         <p class="invalid-feedback" *ngIf="cnicInvalid">
-                          Invalid Cnic No
+                          Invalid Cnic No )
                         </p>
                       </div>
                     </div>

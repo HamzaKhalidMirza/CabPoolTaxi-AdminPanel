@@ -75,6 +75,28 @@ export class DriverService {
     );
   }
 
+  public async updateAccountSettings(userId, credentials: object | any, imgUrl) {
+    const token = await this.authService.getTokenFromStorage();
+    const url = AdminAppConfig.getHostPath() + `/api/v1/drivers/${userId}`;
+
+    const formData = {
+      'username': credentials.username,
+      'phone': credentials.phone,
+      'email': credentials.email,
+      'address': credentials.address,
+      'photoAvatar': imgUrl
+    };
+
+    return this.http
+      .patch(url, formData, {
+        headers: new HttpHeaders().set("Authorization", "Bearer " + token),
+      })
+      .pipe(
+        map((response: Response) => response),
+        catchError(this.handleError)
+      );
+  }
+
   public async deleteDriver(credentials: object | any) {
     const token = await this.authService.getTokenFromStorage();
     const url = AdminAppConfig.getHostPath() + '/api/v1/drivers/'+credentials.id;

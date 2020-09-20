@@ -44,11 +44,11 @@ export class AuthService {
   }
 
   public setCurrentUser(currentUser) {
-    localStorage.setItem('current-driver', currentUser);
+    localStorage.setItem('current-admin', JSON.stringify(currentUser));
   }
 
   public getCurrentUser() {
-    return localStorage.getItem('current-driver');
+    return JSON.parse(localStorage.getItem('current-admin'));
   }
 
 }

@@ -21,14 +21,22 @@
 
   <body id="page-top">
     <!-- Loading Spinner -->
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;">
+    <div
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+      "
+    >
       <span
-      class="spinner-border text-primary"
-      role="status"
-      aria-hidden="true"
-      *ngIf="loading"
+        class="spinner-border text-primary"
+        role="status"
+        aria-hidden="true"
+        *ngIf="loading"
       >
-    </span>
+      </span>
     </div>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -51,9 +59,7 @@
             <!-- DataTales Example -->
             <div class="card shadow mb-4">
               <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                  Admins
-                </h6>
+                <h6 class="m-0 font-weight-bold text-primary">Admins</h6>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -67,10 +73,13 @@
                       <tr>
                         <th>Admin</th>
                         <th>Username</th>
-                        <th>Phone</th>
                         <th>Email</th>
+                        <th>Phone</th>
                         <th>Role</th>
                         <th>Edit</th>
+                        <th *ngIf="currentUser?.role === 'lead-admin'">
+                          Delete
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -86,12 +95,88 @@
                         <td>0{{ data?.phone }}</td>
                         <td>{{ data?.role }}</td>
                         <td>
-                          <button class="btn btn-primary"
-                            [routerLink]="['/adminsRecord', data.id]"
+                          <button
+                            class="btn btn-sm btn-outline-primary"
+                            [routerLink]="['/adminsRecord', data?.id]"
                           >
                             <i class="fas fa-user-edit"></i>
                           </button>
                         </td>
+                        <td *ngIf="currentUser?.role === 'lead-admin'">
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            (click)="openDeletedUserModal(data)"
+                          >
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </td>
+
+                        <!-- Delete Modal-->
+                        <div
+                          [ngClass]="{ showDeleteModal: showDeleteModal }"
+                          class="modal"
+                          id="adminRemoveModal"
+                          tabindex="-1"
+                          role="dialog"
+                          aria-labelledby="exampleModalLabel"
+                          aria-hidden="true"
+                        >
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5
+                                  class="modal-title"
+                                  id="exampleModalLabel"
+                                  style="font-weight: 700"
+                                >
+                                  Profile Deletion! Are you sure?
+                                </h5>
+                                <button
+                                  class="close"
+                                  type="button"
+                                  (click)="closeDeleteUserModal()"
+                                  data-dismiss="modal"
+                                  aria-label="Close"
+                                >
+                                  <span aria-hidden="true">×</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <h6 style="font-weight: 700">
+                                  Once deleted, will not be able to access.
+                                </h6>
+                                <p>
+                                  All information associated to this user
+                                  profile will be permanently deleted. This
+                                  operation can not be undone.
+                                </p>
+                              </div>
+                              <div class="modal-footer">
+                                <button
+                                  class="btn btn-secondary"
+                                  type="button"
+                                  (click)="closeDeleteUserModal()"
+                                  data-dismiss="modal"
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  class="btn btn-danger"
+                                  (click)="deleteAdmin()"
+                                >
+                                  <span *ngIf="!deleteLoading"> Delete </span>
+                                  <span
+                                    class="spinner-border spinner-border-sm text-light"
+                                    role="status"
+                                    aria-hidden="true"
+                                    *ngIf="deleteLoading"
+                                  >
+                                  </span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </tr>
                     </tbody>
                   </table>

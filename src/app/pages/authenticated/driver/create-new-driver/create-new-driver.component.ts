@@ -1,3 +1,5 @@
+import { CnicService } from './../../../../../common/sdk/custom/api/cnic.service';
+import { CnicValidator } from './../../../../../common/validator/cnic.validator';
 import { CarService } from 'src/common/sdk/custom/api/cars.service';
 import { DriverService } from 'src/common/sdk/custom/api/drivers.service';
 import { AdminService } from './../../../../../common/sdk/custom/api/admins.service';
@@ -33,6 +35,7 @@ export class CreateNewDriverComponent implements OnInit {
   @ViewChild('codeView') codeView: any;
   @ViewChild('passwordView') passwordView: any;
   @ViewChild('confPasswordView') confPasswordView: any;
+  @ViewChild('cnicView') cnicView: AbstractControl;
 
   phoneExists: any;
   emailExists: any;
@@ -69,7 +72,8 @@ export class CreateNewDriverComponent implements OnInit {
     private driverServide: DriverService,
     private carService: CarService,
     private firebaseImageHandler: FirebaseImageHandler,
-    private authService: AuthService
+    private authService: AuthService,
+    private cnicService: CnicService
   ) {}
 
   ngOnInit(): void {
@@ -129,8 +133,9 @@ export class CreateNewDriverComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.minLength(15),
-          Validators.maxLength(15),
+          Validators.minLength(0),
+          Validators.maxLength(15)],
+          [CnicValidator.shouldBeValid(this.cnicService)
         ],
       ],
       licenseNo: ['', [Validators.required]],
@@ -177,6 +182,9 @@ export class CreateNewDriverComponent implements OnInit {
   }
   get code() {
     return this.createDriverForm.get('code');
+  }
+  get cnic() {
+    return this.createDriverForm.get('cnicNo');
   }
 
   togglePasswordType() {

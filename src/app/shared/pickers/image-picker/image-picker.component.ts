@@ -1,20 +1,28 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, ElementRef, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Output,
+  EventEmitter,
+  ElementRef,
+  Input,
+} from '@angular/core';
 
 @Component({
   selector: 'app-image-picker',
   templateUrl: './image-picker.component.html',
-  styleUrls: ['./image-picker.component.scss']
+  styleUrls: ['./image-picker.component.scss'],
 })
 export class ImagePickerComponent implements OnInit {
-
-  photo: any;
+  @Input('photo') photo;
   @ViewChild('filePicker') filePickerRef: ElementRef<HTMLInputElement>;
   @Output() imagePick = new EventEmitter<string | File>();
   @Input() showPreview = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
+    console.log('Hell', this.photo);
   }
 
   onPickImage() {
@@ -35,4 +43,27 @@ export class ImagePickerComponent implements OnInit {
     };
     fr.readAsDataURL(pickedFile);
   }
+
+  checkImageExists(imageUrl, callBack) {
+    var imageData = new Image();
+    imageData.onload = function () {
+      callBack(true);
+    };
+    imageData.onerror = function () {
+      callBack(false);
+    };
+    imageData.src = imageUrl;
+  }
+
+  imageExistance() {
+    this.checkImageExists(this.photo, function(existsImage) {
+      if(existsImage == true) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    });
+  }
+
 }

@@ -6,7 +6,7 @@ import { AdminsRecordRoutingModule } from './admins-record-routing.module';
 
 @NgModule({
   declarations: [
-    AdminsRecordComponent,
+    AdminsRecordComponent
   ],
   imports: [
     CommonModule,

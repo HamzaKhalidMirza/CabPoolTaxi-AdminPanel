@@ -23,22 +23,38 @@ export class FirebaseImageHandler {
     const decodedToken = this.authService.getDecodedAccessToken(token);
 
     if(folder === 'vehicles') {
-      const uploadObs = this.uploadFileAndGetMetadata(
-        credentials.vehicleAvatar,
-        decodedToken.user.id,
-        folder
-      );
+      if(credentials.vehicleAvatar instanceof File || credentials.vehicleAvatar instanceof Blob) {
 
-      return uploadObs.downloadUrl$;
+        const uploadObs = this.uploadFileAndGetMetadata(
+          credentials.vehicleAvatar,
+          decodedToken.user.id,
+          folder
+        );
+
+        return uploadObs.downloadUrl$;
+      } else {
+        const obs = Observable.create(obs => {
+          obs.next(credentials.vehicleAvatar);
+        });
+        return obs;
+      }
     } else {
-      const uploadObs = this.uploadFileAndGetMetadata(
-        credentials.photoAvatar,
-        decodedToken.user.id,
-        folder
-      );
+      if(credentials.photoAvatar instanceof File || credentials.photoAvatar instanceof Blob) {
 
-      return uploadObs.downloadUrl$;
-    }
+        const uploadObs = this.uploadFileAndGetMetadata(
+          credentials.photoAvatar,
+          decodedToken.user.id,
+          folder
+        );
+
+        return uploadObs.downloadUrl$;
+      } else {
+        const obs = Observable.create(obs => {
+          obs.next(credentials.photoAvatar);
+        });
+        return obs;
+      }
+      }
   }
 
   uploadFileAndGetMetadata(fileToUpload: File, userId, folder) {

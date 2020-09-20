@@ -103,6 +103,53 @@ export class AdminService {
       );
   }
 
+  public async updateAccountSettings(userId, credentials: object | any, imgUrl) {
+    const token = await this.authService.getTokenFromStorage();
+    const url = AdminAppConfig.getHostPath() + `/api/v1/admins/${userId}`;
+
+    const formData = {
+      'username': credentials.username,
+      'phone': credentials.phone,
+      'email': credentials.email,
+      'photoAvatar': imgUrl
+    };
+
+    return this.http
+      .patch(url, formData, {
+        headers: new HttpHeaders().set("Authorization", "Bearer " + token),
+      })
+      .pipe(
+        map((response: Response) => response),
+        catchError(this.handleError)
+      );
+  }
+
+  public async deleteAdmin(credentials: object | any) {
+    const token = await this.authService.getTokenFromStorage();
+    const url = AdminAppConfig.getHostPath() + '/api/v1/admins/'+credentials.id;
+
+    return this.http.delete(url,  {
+      headers: new HttpHeaders().set("Authorization", "Bearer " + token),
+    })
+    .pipe(
+      map((response: Response) => response),
+      catchError(this.handleError)
+    );
+  }
+
+  public async getDashboardData() {
+    const token = await this.authService.getTokenFromStorage();
+    const url = AdminAppConfig.getHostPath() + '/api/v1/admins/getDashboardData';
+
+    return this.http.get(url,  {
+      headers: new HttpHeaders().set("Authorization", "Bearer " + token),
+    })
+    .pipe(
+      map((response: Response) => response),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: Response) {
     if (error.status === 400) {
       return throwError(new BadInput(error));
