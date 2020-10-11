@@ -16,6 +16,8 @@ import {
   AngularFireUploadTask
 } from "@angular/fire/storage";
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -27,6 +29,7 @@ import {
     BrowserAnimationsModule,
     AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    ChartsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

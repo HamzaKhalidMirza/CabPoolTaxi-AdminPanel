@@ -52,7 +52,7 @@
           <!-- End of TopNav  -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid" [hidden]="loading">
+          <div class="container-fluid" *ngIf="!loading">
             <!-- Page Heading -->
             <h1 class="h3 mb-2 text-gray-800">Dashboard</h1>
 
@@ -69,8 +69,11 @@
                         >
                           Earnings (Monthly)
                         </div>
-                        <div *ngIf="monthlyPaymentData" class="h5 mb-0 font-weight-bold text-gray-800">
-                          Rs. {{monthlyEarning}}
+                        <div
+                          *ngIf="monthlyEarning"
+                          class="h5 mb-0 font-weight-bold text-gray-800"
+                        >
+                          Rs. {{ getCurrentMonthEarnings() }}
                         </div>
                       </div>
                       <div class="col-auto">
@@ -92,8 +95,11 @@
                         >
                           Earnings (Annual)
                         </div>
-                        <div *ngIf="yearlyPaymentData" class="h5 mb-0 font-weight-bold text-gray-800">
-                          Rs. {{yearlyEarning}}
+                        <div
+                          *ngIf="yearlyPaymentData"
+                          class="h5 mb-0 font-weight-bold text-gray-800"
+                        >
+                          Rs. {{ yearlyEarning }}
                         </div>
                       </div>
                       <div class="col-auto">
@@ -115,8 +121,11 @@
                         >
                           Drivers
                         </div>
-                        <div *ngIf="driversCount" class="h5 mb-0 font-weight-bold text-gray-800">
-                          {{driversCount}}
+                        <div
+                          *ngIf="driversCount"
+                          class="h5 mb-0 font-weight-bold text-gray-800"
+                        >
+                          {{ driversCount }}
                         </div>
                       </div>
                       <div class="col-auto">
@@ -138,12 +147,364 @@
                         >
                           Passengers
                         </div>
-                        <div *ngIf="clientsCount" class="h5 mb-0 font-weight-bold text-gray-800">
-                          {{clientsCount}}
+                        <div
+                          *ngIf="clientsCount"
+                          class="h5 mb-0 font-weight-bold text-gray-800"
+                        >
+                          {{ clientsCount }}
                         </div>
                       </div>
                       <div class="col-auto">
                         <i class="fas fa-users fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Row -->
+
+            <div class="row">
+              <!-- Area Chart -->
+              <div class="col-lg-12">
+                <div class="accordion" id="accordionEarning">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                      class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                      <h6 class="" style="margin: 0">
+                        <button
+                          class="btn btn-link btn-block text-left m-0 font-weight-bold text-primary"
+                          type="button"
+                          data-toggle="collapse"
+                          data-target="#earnings"
+                          aria-expanded="true"
+                          style="box-shadow: none"
+                        >
+                          Earnings Overview
+                        </button>
+                      </h6>
+                      <div class="dropdown no-arrow">
+                        <a
+                          class="dropdown-toggle"
+                          href="#"
+                          role="button"
+                          id="dropdownMenuLink"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i
+                            class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"
+                          ></i>
+                        </a>
+                        <div
+                          class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink"
+                        >
+                          <div class="dropdown-header">Earning Charts:</div>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="earningChart.title === 'LineChart'"
+                            (click)="toggleChart('Line', earningChart)"
+                          >
+                            Line Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="earningChart.title === 'BarChart'"
+                            (click)="toggleChart('Bar', earningChart)"
+                          >
+                            Bar Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="earningChart.title === 'RadarChart'"
+                            (click)="toggleChart('Radar', earningChart)"
+                          >
+                            Radar Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="earningChart.title === 'PieChart'"
+                            (click)="toggleChart('Pie', earningChart)"
+                          >
+                            Pie Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="
+                              earningChart.title === 'DoughnutChart'
+                            "
+                            (click)="toggleChart('Doughnut', earningChart)"
+                          >
+                            Doughnut Chart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      id="earnings"
+                      class="collapse show"
+                      aria-labelledby="headingOne"
+                      data-parent="#accordionEarning"
+                    >
+                      <!-- Card Body -->
+                      <div class="card-body">
+                        <app-line-chart
+                          *ngIf="earningChart.title === 'LineChart'"
+                          [chart]="earningChart"
+                        ></app-line-chart>
+                        <app-bar-chart
+                          *ngIf="earningChart.title === 'BarChart'"
+                          [chart]="earningChart"
+                        ></app-bar-chart>
+                        <app-radar-chart
+                          *ngIf="earningChart.title === 'RadarChart'"
+                          [chart]="earningChart"
+                        ></app-radar-chart>
+                        <app-pie-chart
+                          *ngIf="earningChart.title === 'PieChart'"
+                          [chart]="earningChart"
+                        ></app-pie-chart>
+                        <app-doughnut-chart
+                          *ngIf="earningChart.title === 'DoughnutChart'"
+                          [chart]="earningChart"
+                        ></app-doughnut-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Content Row -->
+            <div class="row">
+              <!-- Content Column -->
+              <div class="col-lg-4 mb-4">
+                <div class="accordion" id="accordionUsers">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                      class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                      <h6 class="" style="margin: 0">
+                        <button
+                          class="btn btn-link btn-block text-left m-0 font-weight-bold text-primary"
+                          type="button"
+                          data-toggle="collapse"
+                          data-target="#users"
+                          aria-expanded="true"
+                          aria-controls="collapseOne"
+                          style="box-shadow: none"
+                        >
+                          Users
+                        </button>
+                      </h6>
+                    </div>
+
+                    <div
+                      id="users"
+                      class="collapse show"
+                      aria-labelledby="headingOne"
+                      data-parent="#accordionUsers"
+                    >
+                      <div class="card-body">
+                        <app-users-chart
+                          [admin]="adminsCount"
+                          [driver]="driversCount"
+                          [passenger]="clientsCount"
+                        ></app-users-chart>
+                        <h4 class="small font-weight-bold">
+                          Admins
+                          <span class="float-right">{{ adminsCount }}</span>
+                        </h4>
+                        <div class="progress mb-4">
+                          <div
+                            class="progress-bar bg-success"
+                            role="progressbar"
+                            [style.width.%]="adminsCount"
+                            aria-valuenow="20"
+                            aria-valuemin="0"
+                            aria-valuemax="10"
+                          ></div>
+                        </div>
+                        <h4 class="small font-weight-bold">
+                          Drivers
+                          <span class="float-right">{{ driversCount }}</span>
+                        </h4>
+                        <div class="progress mb-4">
+                          <div
+                            class="progress-bar bg-info"
+                            role="progressbar"
+                            [style.width.%]="driversCount"
+                            aria-valuenow="20"
+                            aria-valuemin="0"
+                            aria-valuemax="10"
+                          ></div>
+                        </div>
+                        <h4 class="small font-weight-bold">
+                          Passengers
+                          <span class="float-right">{{ clientsCount }}</span>
+                        </h4>
+                        <div class="progress mb-4">
+                          <div
+                            class="progress-bar bg-warning"
+                            role="progressbar"
+                            [style.width.%]="clientsCount"
+                            aria-valuenow="20"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+                <div class="accordion" id="accordionUsersChart">
+                  <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                      class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                    >
+                      <h6 class="" style="margin: 0">
+                        <button
+                          class="btn btn-link btn-block text-left m-0 font-weight-bold text-primary"
+                          type="button"
+                          data-toggle="collapse"
+                          data-target="#usersChart"
+                          aria-expanded="true"
+                          style="box-shadow: none"
+                        >
+                          Users Overview
+                        </button>
+                      </h6>
+                      <div class="dropdown no-arrow">
+                        <a
+                          class="dropdown-toggle"
+                          href="#"
+                          role="button"
+                          id="dropdownMenuLink"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i
+                            class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"
+                          ></i>
+                        </a>
+                        <div
+                          class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                          aria-labelledby="dropdownMenuLink"
+                        >
+                          <div class="dropdown-header">Users Charts:</div>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="usersChart.title === 'LineChart'"
+                            (click)="toggleChart('Line', usersChart)"
+                          >
+                            Line Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="usersChart.title === 'BarChart'"
+                            (click)="toggleChart('Bar', usersChart)"
+                          >
+                            Bar Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="usersChart.title === 'RadarChart'"
+                            (click)="toggleChart('Radar', usersChart)"
+                          >
+                            Radar Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="usersChart.title === 'PieChart'"
+                            (click)="toggleChart('Pie', usersChart)"
+                          >
+                            Pie Chart
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            [class.active]="
+                              usersChart.title === 'DoughnutChart'
+                            "
+                            (click)="toggleChart('Doughnut', usersChart)"
+                          >
+                            Doughnut Chart
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      id="usersChart"
+                      class="collapse show"
+                      aria-labelledby="headingOne"
+                      data-parent="#accordionUsersChart"
+                    >
+                      <!-- Card Body -->
+                      <div class="card-body">
+                        <div class="d-flex justify-content-center mt-3 mb-5">
+                          <div class="btn-group">
+                            <button
+                              class="btn user"
+                              [class.activeUser]="selectedChartUser === 'Admin'"
+                              (click)="toggleChartUser('Admin')"
+                            >
+                              Admin
+                            </button>
+                            <button
+                              class="btn user"
+                              [class.activeUser]="
+                                selectedChartUser === 'Driver'
+                              "
+                              (click)="toggleChartUser('Driver')"
+                              style="border-left: 1px solid #fff"
+                            >
+                              Driver
+                            </button>
+                            <button
+                              class="btn user"
+                              [class.activeUser]="
+                                selectedChartUser === 'Passenger'
+                              "
+                              (click)="toggleChartUser('Passenger')"
+                              style="border-left: 1px solid #fff"
+                            >
+                              Passenger
+                            </button>
+                          </div>
+                        </div>
+                        <hr class="sidebar-divider mb-5" style="width: 100%" />
+                        <app-line-chart
+                          *ngIf="usersChart.title === 'LineChart'"
+                          [chart]="usersChart"
+                        ></app-line-chart>
+                        <app-bar-chart
+                          *ngIf="usersChart.title === 'BarChart'"
+                          [chart]="usersChart"
+                        ></app-bar-chart>
+                        <app-radar-chart
+                          *ngIf="usersChart.title === 'RadarChart'"
+                          [chart]="usersChart"
+                        ></app-radar-chart>
+                        <app-pie-chart
+                          *ngIf="usersChart.title === 'PieChart'"
+                          [chart]="usersChart"
+                        ></app-pie-chart>
+                        <app-doughnut-chart
+                          *ngIf="usersChart.title === 'DoughnutChart'"
+                          [chart]="usersChart"
+                        ></app-doughnut-chart>
                       </div>
                     </div>
                   </div>

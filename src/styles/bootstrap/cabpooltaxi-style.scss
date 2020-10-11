@@ -10338,6 +10338,7 @@ a:focus {
   width: 6.5rem;
   height: 100%;
   min-height: 100vh;
+  transition: 0.5s all;
 }
 
 .sidebar .nav-item {
@@ -10457,6 +10458,7 @@ a:focus {
 .sidebar.toggled {
   width: 0 !important;
   overflow: hidden;
+  transition: 0.5s all;
 }
 
 .sidebar.toggled #sidebarToggle::after {
@@ -10499,6 +10501,7 @@ a:focus {
 @media (min-width: 768px) {
   .sidebar {
     width: 14rem !important;
+    transition: 0.5s all;
   }
   .sidebar .nav-item .collapse {
     position: relative;
@@ -10560,6 +10563,7 @@ a:focus {
   .sidebar.toggled {
     overflow: visible;
     width: 6.5rem !important;
+    transition: 0.5s all;
   }
   .sidebar.toggled .nav-item .collapse {
     position: absolute;

@@ -6,22 +6,42 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { LineChartComponent } from './charts/line-chart/line-chart.component';
+import { BarChartComponent } from './charts/bar-chart/bar-chart.component';
+import { PieChartComponent } from './charts/pie-chart/pie-chart.component';
+import { RadarChartComponent } from './charts/radar-chart/radar-chart.component';
+import { DoughnutChartComponent } from './charts/doughnut-chart/doughnut-chart.component';
+import { ChartsModule } from 'ng2-charts';
+import { UsersChartComponent } from './charts/users-chart/users-chart.component';
 
 @NgModule({
     declarations: [
       SideNavComponent,
       TopNavComponent,
-      ImagePickerComponent
+      ImagePickerComponent,
+      LineChartComponent,
+      BarChartComponent,
+      PieChartComponent,
+      RadarChartComponent,
+      DoughnutChartComponent,
+      UsersChartComponent
     ],
     imports: [
         CommonModule,
         RouterModule,
-        FormsModule
+        FormsModule,
+        ChartsModule
     ],
     exports: [
       SideNavComponent,
       TopNavComponent,
-      ImagePickerComponent
+      ImagePickerComponent,
+      LineChartComponent,
+      BarChartComponent,
+      PieChartComponent,
+      RadarChartComponent,
+      DoughnutChartComponent,
+      UsersChartComponent
     ],
     entryComponents: [],
     providers: []

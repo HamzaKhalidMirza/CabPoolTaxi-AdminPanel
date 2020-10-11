@@ -1,0 +1,12 @@
+.user {
+  width: 120px;
+  background: #36bfba;
+  border: 1px solid #36bfba;
+  color: #fff;
+  outline: none;
+  box-shadow: none;
+}
+.user.activeUser {
+  background: #4e73df;
+  border: 1px solid #4e73df;
+}
