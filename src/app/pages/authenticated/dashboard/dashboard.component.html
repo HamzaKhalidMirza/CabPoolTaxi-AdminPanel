@@ -314,6 +314,7 @@
                     >
                       <div class="card-body">
                         <app-users-chart
+                          *ngIf="adminsCount && driversCount && clientsCount"
                           [admin]="adminsCount"
                           [driver]="driversCount"
                           [passenger]="clientsCount"
