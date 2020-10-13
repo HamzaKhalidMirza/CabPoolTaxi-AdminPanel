@@ -207,28 +207,28 @@
                           <div class="dropdown-header">Earning Charts:</div>
                           <button
                             class="dropdown-item"
-                            [class.active]="earningChart?.title === 'LineChart'"
+                            [class.active]="earningChart.title === 'LineChart'"
                             (click)="toggleChart('Line', earningChart)"
                           >
                             Line Chart
                           </button>
                           <button
                             class="dropdown-item"
-                            [class.active]="earningChart?.title === 'BarChart'"
+                            [class.active]="earningChart.title === 'BarChart'"
                             (click)="toggleChart('Bar', earningChart)"
                           >
                             Bar Chart
                           </button>
                           <button
                             class="dropdown-item"
-                            [class.active]="earningChart?.title === 'RadarChart'"
+                            [class.active]="earningChart.title === 'RadarChart'"
                             (click)="toggleChart('Radar', earningChart)"
                           >
                             Radar Chart
                           </button>
                           <button
                             class="dropdown-item"
-                            [class.active]="earningChart?.title === 'PieChart'"
+                            [class.active]="earningChart.title === 'PieChart'"
                             (click)="toggleChart('Pie', earningChart)"
                           >
                             Pie Chart
@@ -236,7 +236,7 @@
                           <button
                             class="dropdown-item"
                             [class.active]="
-                              earningChart?.title === 'DoughnutChart'
+                              earningChart.title === 'DoughnutChart'
                             "
                             (click)="toggleChart('Doughnut', earningChart)"
                           >
@@ -255,23 +255,23 @@
                       <!-- Card Body -->
                       <div class="card-body">
                         <app-line-chart
-                          *ngIf="earningChart?.title === 'LineChart'"
+                          *ngIf="earningChart.title === 'LineChart'"
                           [chart]="earningChart"
                         ></app-line-chart>
                         <app-bar-chart
-                          *ngIf="earningChart?.title === 'BarChart'"
+                          *ngIf="earningChart.title === 'BarChart'"
                           [chart]="earningChart"
                         ></app-bar-chart>
                         <app-radar-chart
-                          *ngIf="earningChart?.title === 'RadarChart'"
+                          *ngIf="earningChart.title === 'RadarChart'"
                           [chart]="earningChart"
                         ></app-radar-chart>
                         <app-pie-chart
-                          *ngIf="earningChart?.title === 'PieChart'"
+                          *ngIf="earningChart.title === 'PieChart'"
                           [chart]="earningChart"
                         ></app-pie-chart>
                         <app-doughnut-chart
-                          *ngIf="earningChart?.title === 'DoughnutChart'"
+                          *ngIf="earningChart.title === 'DoughnutChart'"
                           [chart]="earningChart"
                         ></app-doughnut-chart>
                       </div>
@@ -314,7 +314,6 @@
                     >
                       <div class="card-body">
                         <app-users-chart
-                          *ngIf="adminsCount && driversCount && clientsCount"
                           [admin]="adminsCount"
                           [driver]="driversCount"
                           [passenger]="clientsCount"
@@ -407,28 +406,28 @@
                           <div class="dropdown-header">Users Charts:</div>
                           <button
                             class="dropdown-item"
-                            [class.active]="usersChart?.title === 'LineChart'"
+                            [class.active]="usersChart.title === 'LineChart'"
                             (click)="toggleChart('Line', usersChart)"
                           >
                             Line Chart
                           </button>
                           <button
                             class="dropdown-item"
-                            [class.active]="usersChart?.title === 'BarChart'"
+                            [class.active]="usersChart.title === 'BarChart'"
                             (click)="toggleChart('Bar', usersChart)"
                           >
                             Bar Chart
                           </button>
                           <button
                             class="dropdown-item"
-                            [class.active]="usersChart?.title === 'RadarChart'"
+                            [class.active]="usersChart.title === 'RadarChart'"
                             (click)="toggleChart('Radar', usersChart)"
                           >
                             Radar Chart
                           </button>
                           <button
                             class="dropdown-item"
-                            [class.active]="usersChart?.title === 'PieChart'"
+                            [class.active]="usersChart.title === 'PieChart'"
                             (click)="toggleChart('Pie', usersChart)"
                           >
                             Pie Chart
@@ -436,7 +435,7 @@
                           <button
                             class="dropdown-item"
                             [class.active]="
-                              usersChart?.title === 'DoughnutChart'
+                              usersChart.title === 'DoughnutChart'
                             "
                             (click)="toggleChart('Doughnut', usersChart)"
                           >
@@ -487,23 +486,23 @@
                         </div>
                         <hr class="sidebar-divider mb-5" style="width: 100%" />
                         <app-line-chart
-                          *ngIf="usersChart?.title === 'LineChart'"
+                          *ngIf="usersChart.title === 'LineChart'"
                           [chart]="usersChart"
                         ></app-line-chart>
                         <app-bar-chart
-                          *ngIf="usersChart?.title === 'BarChart'"
+                          *ngIf="usersChart.title === 'BarChart'"
                           [chart]="usersChart"
                         ></app-bar-chart>
                         <app-radar-chart
-                          *ngIf="usersChart?.title === 'RadarChart'"
+                          *ngIf="usersChart.title === 'RadarChart'"
                           [chart]="usersChart"
                         ></app-radar-chart>
                         <app-pie-chart
-                          *ngIf="usersChart?.title === 'PieChart'"
+                          *ngIf="usersChart.title === 'PieChart'"
                           [chart]="usersChart"
                         ></app-pie-chart>
                         <app-doughnut-chart
-                          *ngIf="usersChart?.title === 'DoughnutChart'"
+                          *ngIf="usersChart.title === 'DoughnutChart'"
                           [chart]="usersChart"
                         ></app-doughnut-chart>
                       </div>
