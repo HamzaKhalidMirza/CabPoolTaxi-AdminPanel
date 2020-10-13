@@ -16,7 +16,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/auth/login/login.module').then(
         (m) => m.LoginModule
-      ),
+      )
   },
   {
     path: 'dashboard',
@@ -24,7 +24,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/dashboard/dashboard.module').then(
         (m) => m.DashboardModule
-      ),
+      )
   },
   {
     path: 'adminsRecord',
@@ -32,7 +32,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/admin/admins-record/admins-record.module').then(
         (m) => m.AdminsRecordModule
-      ),
+      )
   },
   {
     path: 'createNewAdmin',
@@ -40,7 +40,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/admin/create-new-admin/create-new-admin.module').then(
         (m) => m.CreateNewAdminModule
-      ),
+      )
   },
   {
     path: 'driversRecord',
@@ -48,7 +48,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/driver/drivers-record/drivers-record.module').then(
         (m) => m.DriversRecordModule
-      ),
+      )
   },
   {
     path: 'createNewDriver',
@@ -56,7 +56,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/driver/create-new-driver/create-new-driver.module').then(
         (m) => m.CreateNewDriverModule
-      ),
+      )
   },
   {
     path: 'passengersRecord',
@@ -64,7 +64,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/passenger/passengers-record/passengers-record.module').then(
         (m) => m.PassengersRecordModule
-      ),
+      )
   },
   {
     path: 'carsRecord',
@@ -72,7 +72,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/authenticated/car/cars-record/cars-record.module').then(
         (m) => m.CarsRecordModule
-      ),
+      )
   },
 ];
 
