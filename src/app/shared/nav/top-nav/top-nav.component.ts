@@ -18,6 +18,7 @@ export class TopNavComponent implements OnInit {
   async ngOnInit() {
     this.loading = true;
     this.currentuser = await this.authService.getCurrentUser();
+    console.log(this.currentuser);
     this.loading = false;
   }
 
