@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AuthService } from 'src/common/sdk/core/auth.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { AuthService } from 'src/common/sdk/core/auth.service';
   templateUrl: './top-nav.component.html',
   styleUrls: ['./top-nav.component.scss']
 })
-export class TopNavComponent implements OnInit {
+export class TopNavComponent implements OnInit, AfterViewInit {
 
   currentuser: any;
   loading: any;
@@ -16,9 +16,14 @@ export class TopNavComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    // this.loading = true;
+    // this.currentuser = await this.authService.getCurrentUser();
+    // this.loading = false;
+  }
+
+  async ngAfterViewInit() {
     this.loading = true;
     this.currentuser = await this.authService.getCurrentUser();
     this.loading = false;
   }
-
 }
