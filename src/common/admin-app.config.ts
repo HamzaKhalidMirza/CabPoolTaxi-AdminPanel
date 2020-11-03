@@ -1,6 +1,6 @@
 export class AdminAppConfig {
     private static localPath = 'http://localhost:3000';
-    private static hostPath = 'https://cabpool-taxi.herokuapp.com';
+    private static hostPath = 'https://cabpooltaxi.herokuapp.com';
 
     public static getLocalPath(): string {
         return AdminAppConfig.localPath;

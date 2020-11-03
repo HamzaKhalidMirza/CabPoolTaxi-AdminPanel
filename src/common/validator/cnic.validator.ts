@@ -15,13 +15,25 @@ export class CnicValidator {
           cnicService.getCNIC_JSON()
           .subscribe(response => {
             const cnicList = response.Cnic;
-            cnicList.forEach(cnic => {
-              if(cnic === input.value) {
-                resolve(null);
+            let res;
+            for(let i=0; i<cnicList.length; i++) {
+              if(cnicList[i] === input.value) {
+                res = null;
+                break;
               } else {
-                resolve({ shouldBeValid: true });
+                res = { shouldBeValid: true };
               }
-            });
+            }
+            resolve(res);
+            // cnicList.forEach(cnic => {
+            //   if(cnic === input.value) {
+            //     console.log('null');
+            //     resolve(null);
+            //   } else {
+            //     console.log('shouldBeValid');
+            //     resolve({ shouldBeValid: true });
+            //   }
+            // });
           });
         }, 1000);
       });

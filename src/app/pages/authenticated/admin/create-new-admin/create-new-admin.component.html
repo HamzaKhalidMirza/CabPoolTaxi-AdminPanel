@@ -373,7 +373,7 @@
                     <div class="col-12 mb-4">
                       <button
                         class="btn btn-primary"
-                        [disabled]="!codeVerified"
+                        [disabled]="!codeVerified || createAdminForm.invalid"
                         type="button"
                         style="width: 100%;"
                         type="submit"
